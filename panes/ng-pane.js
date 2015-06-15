@@ -10,7 +10,7 @@
      mainModule.controller('panesController', ['$scope', function ($scope) {
 
         this.scope = $scope;
-        $scope.dockSide = "right";
+        this.dockSide = "right";
         $scope.options = {};//minWidth maxWidth ...
         $scope.multiplePaneStyle="padding-right:30px;float: right; top:0; bottom:0; right:0;  width: 300px;" + 
                                 "background-color:#64646c;position:fixed;z-index: 10000; display:none; border: solid 1px darkgrey; box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;";
@@ -29,10 +29,10 @@
                         },
                         {
                             hidden: false,
-                            helpText: "Add new question",
+                            helpText: "Add bank question",
                             helpTextPlacement: "left",
                             className: "pane-new-question",
-                            contentTemplate: "modules/assessmentTemplate/assessmentTemplate.newQuestion.tpl.html"
+                            contentTemplate: "modules/assessmentTemplate/assessmentTemplate.bankQuestion.tpl.html"
 
                         },
                         {
@@ -46,7 +46,7 @@
         $scope.toggle = function (pane) {
             var prePane = $scope.paneActive;
             $scope.paneActive = pane;
-            if (prePane === null || prePane === pane)
+            if (prePane === null || prePane === pane || $("#ui-multiplepane-pane").is(":hidden"))
             {
                 if ($scope.dockSide === "left")
                 { $("#ui-multiplepane-pane").toggle("slide", { direction: "left" }, 500); }
@@ -99,6 +99,13 @@
                           }                          
                       };
                   }
+                  //Set the Options.
+                  scope.$watch(attrs.asPane, function (newVal, oldVal) {
+                      angular.forEach(newVal, function (value, key) {
+                          scope.options[key] = value;
+                      });
+                  }, true);
+
                   if (angular.isDefined(attrs.dockSide)) {
                       scope.dockSide = attrs["dockSide"];
                       if(scope.dockSide ==="left")
