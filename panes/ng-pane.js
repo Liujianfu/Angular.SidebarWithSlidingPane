@@ -12,14 +12,14 @@
         this.scope = $scope;
         this.dockSide = "right";
         $scope.options = {};//minWidth maxWidth ...
-        $scope.multiplePaneStyle="padding-right:30px;float: right; top:0; bottom:0; right:0;  width: 300px;" + 
+        this.multiplePaneStyle="padding-right:30px;float: right; top:0; bottom:0; right:0;  width: 300px;" + 
                                 "background-color:#64646c;position:fixed;z-index: 10000; display:none; border: solid 1px darkgrey; box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;";
-        $scope.spliterBarStyle = " margin-left:-3px;background-color:darkgrey; height:100%;  float: left; width: 3px;  cursor: col-resize;";
-        $scope.paneContainerStyle = "float: left; margin:2px;width: 100%;  height:100%; ";
-        $scope.paneselectBarStyle = "padding-top:15px; right: 0; top:0; bottom:0;float: right; width: 35px; height: auto;" +
+        this.spliterBarStyle = " margin-left:-3px;background-color:darkgrey; height:100%;  float: left; width: 3px;  cursor: col-resize;";
+        this.paneContainerStyle = "float: left; margin:2px;width: 100%;  height:100%; ";
+        this.paneselectBarStyle = "padding-top:15px; right: 0; top:0; bottom:0;float: right; width: 35px; height: auto;" +
                                         " background-color: #3b3b49;position:fixed;z-index: 20001;";
-        $scope.paneActive = null;
-        $scope.panes = [{
+        this.paneActive = null;
+        this.panes = [{
                             hidden: false,
                             helpText: "Add new question",
                             helpTextPlacement: "left",
@@ -43,12 +43,13 @@
                             contentTemplate: "modules/assessmentTemplate/assessmentTemplate.newQuestion.tpl.html"
                         }
                     ];
-        $scope.toggle = function (pane) {
-            var prePane = $scope.paneActive;
-            $scope.paneActive = pane;
+        this.toggle = function (pane) {
+            var that = this;
+            var prePane = this.paneActive;
+            this.paneActive = pane;
             if (prePane === null || prePane === pane || $("#ui-multiplepane-pane").is(":hidden"))
             {
-                if ($scope.dockSide === "left")
+                if (this.dockSide === "left")
                 { $("#ui-multiplepane-pane").toggle("slide", { direction: "left" }, 500); }
                 else
                 { $("#ui-multiplepane-pane").toggle("slide", { direction: "right" }, 500); }
@@ -61,10 +62,9 @@
                 $(document).mousemove(function (e) {
                     e.preventDefault();
                     var newWidth = $(window).width() - e.pageX;
-                    if ($scope.dockSide === "left")
-                    {
+                    if (that.dockSide === "left") {
                         newWidth = e.pageX;
-                    }
+                    }  
                     var minWidth = 100, maxWidth = 800;
                     if ($scope.options.minWidth)
                     { minWidth = $scope.options.minWidth; }
@@ -89,13 +89,15 @@
               require: ['?ngModel'],
               restrict: 'A',
               controller: 'panesController',
+              controllerAs: 'panesCtrl',
+              bindToController: true,
               link: function (scope, element, attrs, ngModelController) {
                   var ngModel = ngModelController;
                   if (ngModel)
                   {
                       ngModel.$render = function () {
                           if (ngModel.$modelValue && angular.isArray(ngModel.$modelValue)) {
-                              scope.panes = ngModel.$modelValue;
+                              scope.panesCtrl.panes = ngModel.$modelValue;
                           }                          
                       };
                   }
@@ -107,32 +109,32 @@
                   }, true);
 
                   if (angular.isDefined(attrs.dockSide)) {
-                      scope.dockSide = attrs["dockSide"];
-                      if(scope.dockSide ==="left")
+                      scope.panesCtrl.dockSide = attrs["dockSide"];
+                      if (scope.panesCtrl.dockSide === "left")
                       {
                           //need to change styles 
-                          scope.multiplePaneStyle = "padding-left:30px;float: left; top:0; bottom:0; left:0;  width: 300px;" +
+                          scope.panesCtrl.multiplePaneStyle = "padding-left:30px;float: left; top:0; bottom:0; left:0;  width: 300px;" +
                                                   "background-color:#64646c;position:fixed;z-index: 10000; display:none; border: solid 1px darkgrey; box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;";
-                          scope.spliterBarStyle = " margin-right:-3px;background-color:darkgrey; height:100%;  float: right; width: 3px;  cursor: col-resize;";
-                          scope.paneContainerStyle = "float: right; margin:2px;width: 100%;  height:100%; ";
-                          scope.paneselectBarStyle = "padding-top:15px; left: 0; top:0; bottom:0;float: left; width: 35px; height: auto;" +
+                          scope.panesCtrl.spliterBarStyle = " margin-right:-3px;background-color:darkgrey; height:100%;  float: right; width: 3px;  cursor: col-resize;";
+                          scope.panesCtrl.paneContainerStyle = "float: right; margin:2px;width: 100%;  height:100%; ";
+                          scope.panesCtrl.paneselectBarStyle = "padding-top:15px; left: 0; top:0; bottom:0;float: left; width: 35px; height: auto;" +
                                                           " background-color: #3b3b49;position:fixed;z-index: 20001;";
                       }
                   }
               },
-              template: "<div class='ui-multiplepane'  id='ui-multiplepane-pane' style='{{multiplePaneStyle}}' >" +
-                            "<div id='pane-split-bar' style='{{spliterBarStyle}}'></div>" +
-                            "<div id ='pane-container' style='{{paneContainerStyle}}'>" +
-                                "<div class='ui-pane' ng-show='pane==paneActive' ng-repeat='pane in panes'>"+
+              template: "<div class='ui-multiplepane'  id='ui-multiplepane-pane' style='{{panesCtrl.multiplePaneStyle}}' >" +
+                            "<div id='pane-split-bar' style='{{panesCtrl.spliterBarStyle}}'></div>" +
+                            "<div id ='pane-container' style='{{panesCtrl.paneContainerStyle}}'>" +
+                                "<div class='ui-pane' ng-show='pane==panesCtrl.paneActive' ng-repeat='pane in panesCtrl.panes'>" +
                                     "<div> <ng-include src=\"pane.contentTemplate\"/></div>" +
                                 "</div>" +
                             "</div>" +
                         "</div>" +
-                        "<div clase ='paneselect-bar' style='{{paneselectBarStyle}}'>" +
+                        "<div clase ='paneselect-bar' style='{{panesCtrl.paneselectBarStyle}}'>" +
 
-                             "<div class='ui-paneselector' ng-repeat='pane in panes' tooltip='{{pane.helpText}}' tooltip-placement='{{pane.helpTextPlacement}}'"+
-                                  "ng-hide='pane.hidden' ng-class='{active:pane=== paneActive}'>" +
-                                 "<a ng-click='toggle(pane)' > <i class='{{pane.className}}' style='margin: 2px; line-height: 35px;' ></i> </a>" +
+                             "<div class='ui-paneselector' ng-repeat='pane in panesCtrl.panes' tooltip='{{pane.helpText}}' tooltip-placement='{{pane.helpTextPlacement}}'" +
+                                  "ng-hide='pane.hidden' ng-class='{active:pane=== panesCtrl.paneActive}'>" +
+                                 "<a ng-click='panesCtrl.toggle(pane)' > <i class='{{pane.className}}' style='margin: 2px; line-height: 35px;' ></i> </a>" +
                              "</div>"+
                         "</div>"
           };
