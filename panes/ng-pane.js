@@ -12,10 +12,10 @@
         this.scope = $scope;
         this.dockSide = "right";
         $scope.options = {};//minWidth maxWidth ...
-        this.multiplePaneStyle="padding-right:30px;float: right; top:0; bottom:0; right:0;  width: 300px;" + 
+        this.multiplePaneStyle="padding-right:35px;float: right; top:0; bottom:0; right:0;  width: 300px;" + 
                                 "background-color:#64646c;position:fixed;z-index: 10000; display:none; border: solid 1px darkgrey; box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;";
         this.spliterBarStyle = " margin-left:-3px;background-color:darkgrey; height:100%;  float: left; width: 3px;  cursor: col-resize;";
-        this.paneContainerStyle = "float: left; margin:2px;width: 100%;  height:100%; ";
+        this.paneContainerStyle = "float: left; margin:2px;width: 100%;  height:100%; overflow: scroll; ";
         this.paneselectBarStyle = "padding-top:15px; right: 0; top:0; bottom:0;float: right; width: 35px; height: auto;" +
                                         " background-color: #3b3b49;position:fixed;z-index: 20001;";
         this.paneActive = null;
@@ -37,10 +37,10 @@
                         },
                         {
                             hidden: false,
-                            helpText: "Add new question",
+                            helpText: "Add containers",
                             helpTextPlacement: "left",
                             className: "pane-new-question",
-                            contentTemplate: "modules/assessmentTemplate/assessmentTemplate.newQuestion.tpl.html"
+                            contentTemplate: "modules/assessmentTemplate/assessmentTemplate.addContainer.tpl.html"
                         }
                     ];
         this.toggle = function (pane) {
@@ -113,10 +113,10 @@
                       if (scope.panesCtrl.dockSide === "left")
                       {
                           //need to change styles 
-                          scope.panesCtrl.multiplePaneStyle = "padding-left:30px;float: left; top:0; bottom:0; left:0;  width: 300px;" +
+                          scope.panesCtrl.multiplePaneStyle = "padding-left:35px;float: left; top:0; bottom:0; left:0;  width: 300px;" +
                                                   "background-color:#64646c;position:fixed;z-index: 10000; display:none; border: solid 1px darkgrey; box-shadow: rgba(0, 0, 0, 0.7) 0 1px 10px 0;";
                           scope.panesCtrl.spliterBarStyle = " margin-right:-3px;background-color:darkgrey; height:100%;  float: right; width: 3px;  cursor: col-resize;";
-                          scope.panesCtrl.paneContainerStyle = "float: right; margin:2px;width: 100%;  height:100%; ";
+                          scope.panesCtrl.paneContainerStyle = "float: right; margin:2px;width: 100%;  height:100%;overflow: scroll; ";
                           scope.panesCtrl.paneselectBarStyle = "padding-top:15px; left: 0; top:0; bottom:0;float: left; width: 35px; height: auto;" +
                                                           " background-color: #3b3b49;position:fixed;z-index: 20001;";
                       }
