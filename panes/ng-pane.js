@@ -19,30 +19,7 @@
         this.paneselectBarStyle = "{'padding-top':'15px', 'right': '0', top:0, 'bottom':'0','float': 'right', 'width':'35px','height':'auto'," +
                                         " 'background-color': '#3b3b49','position':'fixed','z-index': '20001'}";
         this.paneActive = null;
-        this.panes = [{
-                            hidden: false,
-                            helpText: "Add new question",
-                            helpTextPlacement: "left",
-                            className: "pane-new-question",
-                            contentTemplate:"modules/assessmentTemplate/assessmentTemplate.newQuestion.tpl.html"
-
-                        },
-                        {
-                            hidden: false,
-                            helpText: "Add bank question",
-                            helpTextPlacement: "left",
-                            className: "pane-new-question",
-                            contentTemplate: "modules/assessmentTemplate/assessmentTemplate.bankQuestion.tpl.html"
-
-                        },
-                        {
-                            hidden: false,
-                            helpText: "Add new question",
-                            helpTextPlacement: "left",
-                            className: "pane-new-question",
-                            contentTemplate: "modules/assessmentTemplate/assessmentTemplate.newQuestion.tpl.html"
-                        }
-                    ];
+        this.panes = [];
         this.toggle = function (pane) {
             var that = this;
             var prePane = this.paneActive;
